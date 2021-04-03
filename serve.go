@@ -7,8 +7,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type DCDKernel struct {
-	counters map[string]int
+type DataStatistical interface {
+	Handler(echo.Context) error
+}
+
+type DCDResponse struct {
+	Code uint8 `json: "code"`
 }
 
 func Run(conf *string) {
@@ -25,10 +29,15 @@ func Run(conf *string) {
 	e.GET("/", hello)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":10086"))
 }
 
 // Handler
-func hello(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
+func hello(ctx echo.Context) error {
+
+	resp := &DCDResponse{
+		Code: 200,
+	}
+
+	return ctx.JSON(http.StatusOK, resp)
 }
