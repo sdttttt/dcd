@@ -1,4 +1,4 @@
-package dcd
+package huck
 
 import (
 	"net/http"
@@ -21,7 +21,7 @@ func NewCounterHandler(path string) *Counter {
 func (counter *Counter) Handler(ctx echo.Context) error {
 	counter.count++
 
-	resp := &DCDResponse{
+	resp := &HuckResponse{
 		Code: 200,
 	}
 

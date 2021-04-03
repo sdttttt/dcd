@@ -1,4 +1,4 @@
-package dcd
+package huck
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ type DataStatistical interface {
 	Handler(echo.Context) error
 }
 
-type DCDResponse struct {
+type HuckResponse struct {
 	Code uint8 `json: "code"`
 }
 
@@ -32,7 +32,7 @@ func Run(conf *string) {
 // Handler
 func hello(ctx echo.Context) error {
 
-	resp := &DCDResponse{
+	resp := &HuckResponse{
 		Code: 200,
 	}
 

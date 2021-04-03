@@ -1,4 +1,4 @@
-module github.com/sdttttt/dcd
+module github.com/sdttttt/huck
 
 go 1.15
 
