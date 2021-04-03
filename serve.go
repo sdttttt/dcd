@@ -9,7 +9,7 @@ import (
 )
 
 type DataStatistical interface {
-	Handler(echo.Context) error
+	Handler(ctx echo.Context) error
 
 	Path() string
 }
@@ -27,8 +27,10 @@ func Run(conf_filename *string) {
 
 	// Routes
 	e.GET("/", hello)
-
 	conf := FromConfigFile(*conf_filename)
+
+	kernel.ParseConfigHandler(conf)
+	kernel.RegisterHandlerToEcho(e)
 
 	log.Println(conf.Counter)
 
