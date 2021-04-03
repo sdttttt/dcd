@@ -1,6 +1,7 @@
 package huck
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -17,7 +18,7 @@ type HuckResponse struct {
 	Code uint8 `json: "code"`
 }
 
-func Run(conf *string) {
+func Run(conf_filename *string) {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
@@ -26,6 +27,10 @@ func Run(conf *string) {
 
 	// Routes
 	e.GET("/", hello)
+
+	conf := FromConfigFile(*conf_filename)
+
+	log.Println(conf.Counter)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":10086"))
