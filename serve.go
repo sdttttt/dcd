@@ -19,11 +19,8 @@ func Run(conf *string) {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
-
-	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
 
 	// Routes
 	e.GET("/", hello)
