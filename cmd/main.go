@@ -10,5 +10,5 @@ var conf *string = flag.String("c", huck.DefaultConfigFileName, "Specify a confi
 
 func main() {
 	flag.Parse()
-	huck.Run(conf)
+	huck.Run(*conf)
 }
