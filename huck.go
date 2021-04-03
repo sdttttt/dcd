@@ -1,12 +1,12 @@
 package huck
 
-var kernel *HuckKernel = NewDCDKernel()
+var kernel *HuckKernel = NewHuckKernel()
 
 type HuckKernel struct {
 	stat map[string]DataStatistical
 }
 
-func NewDCDKernel() *HuckKernel {
+func NewHuckKernel() *HuckKernel {
 	return &HuckKernel{
 		stat: make(map[string]DataStatistical),
 	}

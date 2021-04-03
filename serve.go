@@ -9,6 +9,8 @@ import (
 
 type DataStatistical interface {
 	Handler(echo.Context) error
+
+	Path() string
 }
 
 type HuckResponse struct {

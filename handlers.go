@@ -27,3 +27,7 @@ func (counter *Counter) Handler(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, resp)
 }
+
+func (counter *Counter) Path() string {
+	return counter.path
+}
