@@ -2,6 +2,7 @@ package huck
 
 import (
 	"net/http"
+	"sync/atomic"
 
 	"github.com/labstack/echo/v4"
 )
@@ -19,7 +20,7 @@ func NewCounterHandler(path string) *Counter {
 }
 
 func (counter *Counter) Handler(ctx echo.Context) error {
-	counter.count++
+	atomic.AddUint64(&counter.count, 1)
 
 	resp := &HuckResponse{
 		Code: 200,
@@ -30,4 +31,12 @@ func (counter *Counter) Handler(ctx echo.Context) error {
 
 func (counter *Counter) Path() string {
 	return counter.path
+}
+
+func (counter *Counter) Persistence() {
+
+}
+
+func (counter *Counter) GetCount() uint64 {
+	return counter.count
 }

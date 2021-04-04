@@ -8,16 +8,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type DataStatistical interface {
-	Handler(ctx echo.Context) error
-
-	Path() string
-}
-
-type HuckResponse struct {
-	Code uint8 `json: "code"`
-}
-
 func Run(conf_filename string) {
 	e := echo.New()
 
