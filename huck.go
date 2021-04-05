@@ -1,8 +1,6 @@
 package huck
 
 import (
-	"sync"
-
 	"github.com/labstack/echo/v4"
 )
 
@@ -13,19 +11,16 @@ type HuckResponse struct {
 }
 
 type HuckKernel struct {
-	stat     map[string]DataStatistical
-	FileLock *sync.RWMutex
+	stat map[string]DataStatistical
 }
 
 type DataStatistical interface {
 	Handler(ctx echo.Context) error
-	Persistence()
 	Path() string
 }
 
 func NewHuckKernel() *HuckKernel {
 	return &HuckKernel{
-		stat:     make(map[string]DataStatistical),
-		FileLock: new(sync.RWMutex),
+		stat: make(map[string]DataStatistical),
 	}
 }

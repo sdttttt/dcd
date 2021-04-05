@@ -10,17 +10,20 @@ import (
 type Counter struct {
 	path  string
 	count uint64
+	store *CounterStorage
 }
 
 func NewCounterHandler(path string) *Counter {
 	return &Counter{
 		path:  path,
 		count: 0,
+		store: counterStore,
 	}
 }
 
 func (counter *Counter) Handler(ctx echo.Context) error {
 	atomic.AddUint64(&counter.count, 1)
+	counter.store.Save(counter.path, counter.count)
 
 	resp := &HuckResponse{
 		Code: 200,
@@ -31,10 +34,6 @@ func (counter *Counter) Handler(ctx echo.Context) error {
 
 func (counter *Counter) Path() string {
 	return counter.path
-}
-
-func (counter *Counter) Persistence() {
-
 }
 
 func (counter *Counter) GetCount() uint64 {
