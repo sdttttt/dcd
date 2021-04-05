@@ -16,18 +16,22 @@ type CounterStorage struct {
 }
 
 func InitCounterStorage() *CounterStorage {
-	return &CounterStorage{
+	store := &CounterStorage{
 		counterMap: make(map[string]uint64),
 		lock:       new(sync.RWMutex),
 	}
+
+	return store
 }
+
+func (store *CounterStorage) LoadFromDisk() {}
 
 func (store *CounterStorage) Save(key string, value uint64) {
 	store.counterMap[key] = value
-	go store.persistenceSync()
+	go store.persistenceToDisk()
 }
 
-func (store *CounterStorage) persistenceSync() {
+func (store *CounterStorage) persistenceToDisk() {
 
 	store.lock.Lock()
 
