@@ -16,7 +16,7 @@ func TestHuckCore(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode, "test_1 should is Ok.")
 
-	counter := kernel.stat["test_1"].(*Counter)
+	counter := kernel.stat["/test_1"].(*Counter)
 	assert.NotNil(t, counter)
 	assert.Greater(t, counter.count, uint64(0), "test_1 counts should greater 0.")
 }
