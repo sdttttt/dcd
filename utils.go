@@ -31,8 +31,9 @@ func BytesToString(b []byte) string {
 
 // IsFileExist to quick check file is exist.
 func IsFileExist(filename string) bool {
-	if _, err := os.Stat(filename); err != nil {
-		return !os.IsNotExist(err)
+	_, err := os.Lstat(filename)
+	if err == nil {
+		return true
 	}
-	return true
+	return os.IsExist(err)
 }
