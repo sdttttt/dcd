@@ -2,22 +2,20 @@ package huck
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func Run(conf_filename string) {
+// Run huck application.
+func Run(conFilename string) {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 
-	// Routes
-	e.GET("/", hello)
-	conf := FromConfigFile(conf_filename)
+	conf = FromConfigFile(conFilename)
 
 	kernel.ParseConfigHandler(conf)
 	kernel.RegisterHandlerToEcho(e)
@@ -26,14 +24,4 @@ func Run(conf_filename string) {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":10086"))
-}
-
-// Handler
-func hello(ctx echo.Context) error {
-
-	resp := &HuckResponse{
-		Code: 200,
-	}
-
-	return ctx.JSON(http.StatusOK, resp)
 }

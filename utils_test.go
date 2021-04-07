@@ -29,4 +29,6 @@ func TestBytesToString(t *testing.T) {
 func TestIsFileExists(t *testing.T) {
 	filename := "README.md"
 	assert.True(t, IsFileExist(filename), "README.md is exist.")
+
+	assert.False(t, IsFileExist("????"), "??? is not exist.")
 }

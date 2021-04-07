@@ -9,25 +9,28 @@ import (
 	"sync"
 )
 
-var counterStore *CounterStorage = InitCounterStorage()
+var counterStore = InitCounterStorage()
 
+// CounterStorage is Counter persistence device.
 type CounterStorage struct {
 	counterMap map[string]uint64
 
 	lock *sync.RWMutex
 }
 
+// InitCounterStorage to initializer a CounterStorage.
 func InitCounterStorage() *CounterStorage {
 	store := &CounterStorage{
 		counterMap: make(map[string]uint64),
 		lock:       new(sync.RWMutex),
 	}
 
-	store.LoadFromDisk(DEFAULT_COUNTER_FILE_NAME)
+	store.LoadFromDisk(DefaultCounterFileName)
 
 	return store
 }
 
+// LoadFromDisk is Locate the persistent counter from the hard disk and load it into Storage.
 func (store *CounterStorage) LoadFromDisk(filename string) {
 	if !IsFileExist(filename) {
 		return
@@ -43,6 +46,7 @@ func (store *CounterStorage) LoadFromDisk(filename string) {
 	store.LoadFromString(content)
 }
 
+// LoadFromString is Locate the persistent counter from the String and load it into Storage.
 func (store *CounterStorage) LoadFromString(content string) {
 
 	counters := strings.Split(content, "\n")
@@ -52,12 +56,12 @@ func (store *CounterStorage) LoadFromString(content string) {
 		if len(counterArr) == 1 {
 			continue
 		} else if len(counterArr) != 2 {
-			log.Fatalln(STATISTICS_FILE_FORMAT_ERROR)
+			log.Fatalln(StatisticsFileFormatError)
 		}
 
 		count, err := strconv.ParseUint(strings.TrimSpace(counterArr[1]), 10, 64)
 		if err != nil {
-			log.Println(STATISTICS_FILE_FORMAT_ERROR)
+			log.Println(StatisticsFileFormatError)
 			log.Fatalln(err.Error())
 		}
 
@@ -65,6 +69,7 @@ func (store *CounterStorage) LoadFromString(content string) {
 	}
 }
 
+// Save the new counter value and persist it. persist is Asynchronous.
 func (store *CounterStorage) Save(key string, value uint64) {
 	store.counterMap[key] = value
 	go store.persistenceToDisk()
@@ -74,7 +79,7 @@ func (store *CounterStorage) persistenceToDisk() {
 
 	store.lock.Lock()
 
-	f, err := os.OpenFile(DEFAULT_COUNTER_FILE_NAME, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+	f, err := os.OpenFile(DefaultCounterFileName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
 
 	if err != nil {
 		log.Fatalln(err.Error())
