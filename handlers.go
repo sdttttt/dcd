@@ -19,7 +19,7 @@ type Counter struct {
 func NewCounterHandler(name string, path string) *Counter {
 	count := uint64(0)
 
-	if counterStore.counterMap[path] != 0 {
+	if counterStore.counterMap[name] != 0 {
 		count = counterStore.counterMap[name]
 	}
 
