@@ -25,6 +25,9 @@ jobs:
     - name: Get
       run: go get -v ./...
 
+    - name: Run Revive Action by pulling pre-built image
+      uses: docker://morphy/revive-action:v1
+
     - name: Test
       run: go test -v -cover ./...
 
