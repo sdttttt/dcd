@@ -7,14 +7,19 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var conf *Configuration
+
+// Configuration is the object structure of huck.yml.
 type Configuration struct {
 	Counter []string
 }
 
+// NewConfiguration to create a empty Configuration struct.
 func NewConfiguration() *Configuration {
 	return &Configuration{}
 }
 
+// FromConfigFile from huck.yml read data to Configuration struct.
 func FromConfigFile(filename string) *Configuration {
 	conf := NewConfiguration()
 

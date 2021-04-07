@@ -7,12 +7,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Counter statisticians.
 type Counter struct {
 	path  string
 	count uint64
 	store *CounterStorage
 }
 
+// NewCounterHandler to initializer a Counter.
 func NewCounterHandler(path string) *Counter {
 	count := uint64(0)
 
@@ -27,21 +29,24 @@ func NewCounterHandler(path string) *Counter {
 	}
 }
 
+// Handler is Counter logic.
 func (counter *Counter) Handler(ctx echo.Context) error {
 	atomic.AddUint64(&counter.count, 1)
 	counter.store.Save(counter.path, counter.count)
 
-	resp := &HuckResponse{
+	resp := &Response{
 		Code: 200,
 	}
 
 	return ctx.JSON(http.StatusOK, resp)
 }
 
+// Path is route url.
 func (counter *Counter) Path() string {
 	return counter.path
 }
 
+// GetCount is get count of counter.
 func (counter *Counter) GetCount() uint64 {
 	return counter.count
 }

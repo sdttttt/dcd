@@ -10,7 +10,7 @@ import (
 
 func TestHuckCore(t *testing.T) {
 	go Run(TestConfigYamlFileName)
-	time.Sleep(1 * time.Second)
+	time.Sleep(time.Second)
 
 	resp, err := http.Get("http://127.0.0.1:10086/test_1")
 	assert.Nil(t, err)

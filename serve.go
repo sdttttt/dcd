@@ -7,14 +7,15 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func Run(conf_filename string) {
+// Run huck application.
+func Run(conFilename string) {
 	e := echo.New()
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 
-	conf := FromConfigFile(conf_filename)
+	conf = FromConfigFile(conFilename)
 
 	kernel.ParseConfigHandler(conf)
 	kernel.RegisterHandlerToEcho(e)

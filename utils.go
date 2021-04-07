@@ -6,6 +6,7 @@ import (
 	"unsafe"
 )
 
+// StringToBytes to string to []byte.
 func StringToBytes(s string) []byte {
 	str := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	bytes := reflect.SliceHeader{
@@ -17,6 +18,7 @@ func StringToBytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&bytes))
 }
 
+// BytesToString to []byte to string.
 func BytesToString(b []byte) string {
 	bytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 
@@ -27,6 +29,7 @@ func BytesToString(b []byte) string {
 	return *(*string)(unsafe.Pointer(&str))
 }
 
+// IsFileExist to quick check file is exist.
 func IsFileExist(filename string) bool {
 	if _, err := os.Stat(filename); err != nil {
 		return !os.IsNotExist(err)
