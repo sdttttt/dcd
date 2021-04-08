@@ -12,8 +12,8 @@ Huck is a simple data collection server program, It's built on top of the Echo. 
 counter:
 
   #  Here is the route used
-  - "/week"
-  - "/bangumi"
+  - name: "测试员"
+    path: "/week"
 ```
 
 ## Handlers
