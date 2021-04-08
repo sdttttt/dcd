@@ -7,5 +7,10 @@ version: 2
 updates:
   - package-ecosystem: "gomod" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "SDTTTTT"
+    assignees:
+      - "sdttttt"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      # Check for npm updates on Sundays
+      day: "sunday"
