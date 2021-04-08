@@ -2,14 +2,26 @@ package huck
 
 import (
 	"os"
-	"reflect"
 	"unsafe"
 )
 
+// StringHeader Don't uintptr
+type StringHeader struct {
+	Data unsafe.Pointer
+	Len  int
+}
+
+// SliceHeader Don't uintptr
+type SliceHeader struct {
+	Data unsafe.Pointer
+	Len  int
+	Cap  int
+}
+
 // StringToBytes to string to []byte.
 func StringToBytes(s string) []byte {
-	str := (*reflect.StringHeader)(unsafe.Pointer(&s))
-	bytes := reflect.SliceHeader{
+	str := (*StringHeader)(unsafe.Pointer(&s))
+	bytes := SliceHeader{
 		Data: str.Data,
 		Len:  str.Len,
 		Cap:  str.Len,
@@ -20,9 +32,9 @@ func StringToBytes(s string) []byte {
 
 // BytesToString to []byte to string.
 func BytesToString(b []byte) string {
-	bytes := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	bytes := (*SliceHeader)(unsafe.Pointer(&b))
 
-	str := reflect.StringHeader{
+	str := StringHeader{
 		Data: bytes.Data,
 		Len:  bytes.Len,
 	}
