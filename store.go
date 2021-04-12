@@ -15,19 +15,26 @@ var counterStore = InitCounterStorage()
 type CounterStorage struct {
 	counterMap map[string]uint64
 
-	lock *sync.RWMutex
+	fieldLocks map[string]*sync.Mutex
+	fileLock   *sync.Mutex
 }
 
 // InitCounterStorage to initializer a CounterStorage.
 func InitCounterStorage() *CounterStorage {
 	store := &CounterStorage{
 		counterMap: make(map[string]uint64),
-		lock:       new(sync.RWMutex),
+		fieldLocks: make(map[string]*sync.Mutex),
+		fileLock:   new(sync.Mutex),
 	}
 
 	store.LoadFromDisk(DefaultCounterFileName)
 
 	return store
+}
+
+// InitCounterFieldLocks to init fieldLocks
+func (store *CounterStorage) InitCounterFieldLocks(key string) {
+	store.fieldLocks[key] = new(sync.Mutex)
 }
 
 // LoadFromDisk is Locate the persistent counter from the hard disk and load it into Storage.
@@ -71,13 +78,16 @@ func (store *CounterStorage) LoadFromString(content string) {
 
 // Save the new counter value and persist it. persist is Asynchronous.
 func (store *CounterStorage) Save(key string, value uint64) {
+	store.fieldLocks[key].Lock()
 	store.counterMap[key] = value
-	go store.persistenceToDisk()
+	store.fieldLocks[key].Unlock()
+
+	store.persistenceToDisk()
 }
 
 func (store *CounterStorage) persistenceToDisk() {
 
-	store.lock.Lock()
+	store.fileLock.Lock()
 
 	f, err := os.OpenFile(DefaultCounterFileName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
 
@@ -93,7 +103,7 @@ func (store *CounterStorage) persistenceToDisk() {
 
 	defer func() {
 		f.Close()
-		store.lock.Unlock()
+		store.fileLock.Unlock()
 	}()
 }
 

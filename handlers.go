@@ -34,11 +34,10 @@ func NewCounterHandler(name string, path string) *Counter {
 // Handler is Counter logic.
 func (counter *Counter) Handler(ctx echo.Context) error {
 	atomic.AddUint64(&counter.count, 1)
-	counter.store.Save(counter.name, counter.count)
 
-	resp := &Response{
-		Code: 200,
-	}
+	go counter.store.Save(counter.name, counter.count)
+
+	resp := &Response{Code: 200}
 
 	return ctx.JSON(http.StatusOK, resp)
 }
