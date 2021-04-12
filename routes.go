@@ -9,6 +9,7 @@ import (
 // ParseConfigHandler is All processors in the parse configuration struct are added to HuckKernel.
 func (hk *Kernel) ParseConfigHandler(conf *Configuration) {
 	for _, counter := range conf.Counter {
+		counterStore.InitCounterFieldLocks(counter.Name)
 		hk.stat[counter.Path] = NewCounterHandler(counter.Name, counter.Path)
 	}
 }

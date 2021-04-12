@@ -35,7 +35,7 @@ func NewCounterHandler(name string, path string) *Counter {
 func (counter *Counter) Handler(ctx echo.Context) error {
 	atomic.AddUint64(&counter.count, 1)
 
-	counter.store.Save(counter.name, counter.count)
+	go counter.store.Save(counter.name, counter.count)
 
 	resp := &Response{Code: 200}
 
