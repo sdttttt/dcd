@@ -11,10 +11,14 @@ var conf *Configuration
 
 // Configuration is the object structure of huck.yml.
 type Configuration struct {
-	Counter []struct {
-		Name string
-		Path string
-	}
+	Counter []counterOptions
+}
+
+// Counter handler config file options.
+type counterOptions struct {
+	Name     string
+	Path     string
+	Interval string
 }
 
 // NewConfiguration to create a empty Configuration struct.
